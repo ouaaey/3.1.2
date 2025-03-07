@@ -26,15 +26,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Pattern(regexp = "^[А-ЯA-Z][а-яa-z]+$", message = "Некорректный ввод имени")
-    @NotEmpty(message = "Имя не может быть пустым")
+    @Pattern(regexp = "^[А-ЯA-Z][а-яa-z]+$", message = "некорректный ввод имени")
+    @NotEmpty(message = "имя не может быть пустым")
     @Column(name = "first_name")
     private String firstName;
-
-    @Pattern(regexp = "^[А-ЯA-Z][а-яa-z]+$", message = "Некорректный ввод фамилии")
-    @NotEmpty(message = "Фамилия не может быть пустой")
-    @Column(name = "last_name")
-    private String lastName;
 
     @NotEmpty(message = "Email не может быть пустым")
     @Email(message = "Некорректный email")
@@ -57,7 +52,6 @@ public class User implements UserDetails {
 
     public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
         this.firstName = firstName;
-        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -114,14 +108,6 @@ public class User implements UserDetails {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -148,7 +134,6 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +

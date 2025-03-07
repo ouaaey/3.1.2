@@ -25,8 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN") // доступ только ADMIN
-                .antMatchers("/user/**").hasRole("USER")   // доступ только USER
+                .antMatchers("/admin/**").hasRole("ADMIN") // доступ ADMIN
+                .antMatchers("/user/**").hasRole("USER")   // доступ USER
                 .antMatchers("/login").permitAll()         // доступна всем
                 .anyRequest().authenticated()              // запросы требуют аутентификации
                 .and()

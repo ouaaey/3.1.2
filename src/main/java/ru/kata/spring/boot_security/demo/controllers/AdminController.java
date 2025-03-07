@@ -32,7 +32,7 @@ public class AdminController {
     @GetMapping
     public String adminPage(Model model) {
         model.addAttribute("users", userService.findAll());
-        return "admin"; // Убедитесь, что шаблон admin.html существует
+        return "admin";
     }
 
     @GetMapping("/add")
