@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: MVN
+Build-Jdk: Oracle OpenJDK 17.0.12
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor-Id: ru.javamentor
+Main-Class: ${start-class}
+

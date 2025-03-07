@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
         User userToUpdate = userRepository.findById(id).orElse(null);
         if (userToUpdate != null) {
             userToUpdate.setFirstName(user.getFirstName());
-            userToUpdate.setLastName(user.getLastName());
             userToUpdate.setEmail(user.getEmail());
             userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
             userToUpdate.setRoles(user.getRoles());

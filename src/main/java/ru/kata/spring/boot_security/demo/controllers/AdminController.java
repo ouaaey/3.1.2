@@ -70,7 +70,7 @@ public class AdminController {
         }
         Optional<User> userWithSameEmail = userService.findByEmail(user.getEmail());
         if (userWithSameEmail.isPresent() && userWithSameEmail.get().getId() != id) {
-            result.rejectValue("email", "error.user", "Этот email уже используется другим пользователем.");
+            result.rejectValue("email", "error.user", "этот email уже используется.");
             return "user-edit";
         }
         userService.update(id, user);

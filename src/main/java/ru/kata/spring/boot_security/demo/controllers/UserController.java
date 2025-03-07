@@ -1,14 +1,11 @@
+package ru.kata.spring.boot_security.demo.controllers;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -32,16 +29,18 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/user")
-    public String userPage(Model model) {
+    @GetMapping
+    public ResponseEntity<?> userPage() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // Получаем имя пользователя
+        String username = authentication.getName();
 
 
-        model.addAttribute("username", username);
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return "user";
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
@@ -51,7 +50,9 @@ public class UserController {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }
 
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
 
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             Role userRole = roleRepository.findByName("ROLE_USER")
@@ -59,9 +60,9 @@ public class UserController {
             user.setRoles(Collections.singleton(userRole));
         }
 
+
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully!");
     }
-
 }
