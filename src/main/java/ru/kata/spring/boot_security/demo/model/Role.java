@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,19 +23,9 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
-
+    private Set<User> users;
 
     public Role() {
-    }
-
-    public Role(int id) {
-        this.id = id;
-    }
-
-    public Role(int id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Role(String name) {
@@ -74,17 +63,15 @@ public class Role implements GrantedAuthority {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Role role1 = (Role) o;
-        return id == role1.id && Objects.equals(name, role1.name);
+        Role role = (Role) o;
+        return id == role.id && Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + Objects.hashCode(name);
-        return result;
+        return Objects.hash(id, name);
     }
 
     @Override

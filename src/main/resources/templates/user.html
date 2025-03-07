@@ -1,30 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
-
+    <title>User Page</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-<table>
-    <tr>
-        <th>ID</th>
-        <td th:text="${userDetails.getUser().id}">1</td>
-    </tr>
-    <tr>
-        <th>Имя</th>
-        <td th:text="${userDetails.getUser().firstName}">name</td>
-    </tr>
-    <tr>
-        <th>Фамилия</th>
-        <td th:text="${userDetails.getUser().lastName}">lastname</td>
-
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td th:text="${userDetails.getUser().email}">example@example.com</td>
-    </tr>
-</table>
-<a href="/logout">logout</a>
+<h1>User Page</h1>
+<p>Username: <span th:text="${username}"></span></p>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>

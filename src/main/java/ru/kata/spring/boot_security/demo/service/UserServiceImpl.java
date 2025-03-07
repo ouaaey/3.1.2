@@ -8,11 +8,11 @@ import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
-    @Transactional
     @Override
     public void add(User user) {
         if (user.getRoles().isEmpty()) {
@@ -37,7 +36,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Transactional
     @Override
     public void update(int id, User user) {
         User userToUpdate = userRepository.findById(id).orElse(null);
@@ -51,13 +49,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
     @Override
     public void delete(int id) {
         userRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
