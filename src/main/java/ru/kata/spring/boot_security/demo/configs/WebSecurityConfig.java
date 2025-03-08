@@ -11,63 +11,41 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SuccessUserHandler successUserHandler;
+    private final LoginSuccessHandler successUserHandler;
     private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public WebSecurityConfig(LoginSuccessHandler successUserHandler, UserDetailsService userDetailsService) {
+        this.successUserHandler = successUserHandler;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN") // доступ ADMIN
-                .antMatchers("/user/**").hasRole("USER")   // доступ USER
-                .antMatchers("/login").permitAll()         // доступна всем
-                .anyRequest().authenticated()              // запросы требуют аутентификации
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")                       //  вход
-                .defaultSuccessUrl("/default")             // перенаправление после входа
-                .failureUrl("/login?error=true")           // перенаправление при ошибке аутентификации
+                .loginPage("/login")
+                .successHandler(successUserHandler) // Используем наш обработчик
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login")               // перенаправление после выхода
+                .logoutSuccessUrl("/login") // Убедитесь, что путь правильный
                 .permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin@example.ru")
-                .password(passwordEncoder().encode("admin")) // пароль1
-                .roles("ADMIN")
-                .and()
-                .withUser("user@example.ru")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER");
-    }
-
-    @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService) {
-        this.successUserHandler = successUserHandler;
-        this.userDetailsService = userDetailsService;
-    }
-
-
-    @GetMapping("/default")
-    public String defaultAfterLogin(HttpServletRequest request) {
-        if (request.isUserInRole("ADMIN")) {
-            return "redirect:/admin";
-        } else if (request.isUserInRole("USER")) {
-            return "redirect:/user";
-        }
-        return "redirect:/login";
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Bean
@@ -76,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
