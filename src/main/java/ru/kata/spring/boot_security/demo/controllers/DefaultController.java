@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class DefaultController {
 
+    @GetMapping("/")
+    public String home() {
+        return "index"; // Главная страница
+    }
+
     @GetMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
         if (request.isUserInRole("ADMIN")) {
@@ -15,6 +20,6 @@ public class DefaultController {
         } else if (request.isUserInRole("USER")) {
             return "redirect:/user";
         }
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

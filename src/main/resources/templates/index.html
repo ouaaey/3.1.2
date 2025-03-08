@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <title>Главная страница</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="LogIn"/>
-</form>
+<h1>Добро пожаловать!</h1>
+<a href="/login">Войти</a>
 </body>
 </html>
