@@ -36,7 +36,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    // Геттеры и сеттеры
+
     public Integer getId() {
         return id;
     }
@@ -73,7 +73,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    // Методы UserDetails
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

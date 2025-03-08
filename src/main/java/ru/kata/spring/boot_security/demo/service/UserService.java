@@ -16,5 +16,5 @@ public interface UserService {
 
     User findById(int id);
 
-    Optional<User> findByEmail(String email); // Возвращает Optional<User>
+    Optional<User> findByEmail(String email);
 }

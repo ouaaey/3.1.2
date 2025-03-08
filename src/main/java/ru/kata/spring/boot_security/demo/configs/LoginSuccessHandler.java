@@ -15,14 +15,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        String contextPath = request.getContextPath(); // Получаем контекстный путь
+        String contextPath = request.getContextPath();
 
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect(contextPath + "/admin"); // Учитываем контекстный путь
+            response.sendRedirect(contextPath + "/admin");
         } else if (roles.contains("ROLE_USER")) {
-            response.sendRedirect(contextPath + "/user"); // Учитываем контекстный путь
+            response.sendRedirect(contextPath + "/user");
         } else {
-            response.sendRedirect(contextPath + "/"); // Учитываем контекстный путь
+            response.sendRedirect(contextPath + "/");
         }
     }
 }

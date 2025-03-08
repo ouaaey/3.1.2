@@ -15,7 +15,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "role")
     private String name;
 
-    // Геттеры и сеттеры
+
     public int getId() {
         return id;
     }
@@ -32,14 +32,13 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 
-    // Метод GrantedAuthority
+
     @Override
     public String getAuthority() {
         return name;
     }
 
-    // equals и hashCode
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -35,11 +35,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .successHandler(successUserHandler) // Используем наш обработчик
+                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login") // Убедитесь, что путь правильный
+                .logoutSuccessUrl("/login")
                 .permitAll();
     }
 
